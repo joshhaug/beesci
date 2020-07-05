@@ -1,0 +1,43 @@
+# Permalinks
+permalink:           /:categories/:title.html
+
+# Setup
+title:               BeeSci
+tagline:             Beehive Science
+paginate:            1
+#baseurl:             ""
+analytics_id:        UA-83227079-1
+
+url: https://jhaug.com   # with the https protocol
+enforce_ssl: jhaug.com   # without any protocol
+
+pages_list:
+  About: '/about'
+  Archive: '/archive'
+
+# Assets
+#
+# We specify the directory for Jekyll so we can use @imports.
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+# About/contact
+author:
+  name:              Joshua Haug
+  url:               http://www.jhaug.com
+  email:             josh.haug55@gmail.com
+
+# Custom vars
+version:             2.0.0
+github:
+    repo:              https://github.com/poole/poole
+
+# Default extension for new posts and pages
+post_ext: md
+page_ext: html
+
+# Gems
+plugins:
+  - jekyll-gist
+  - jekyll-paginate
