@@ -4,13 +4,29 @@
  <title>BeeSci</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2020-07-07T00:37:16-07:00</updated>
+ <updated>2020-07-07T16:22:17-07:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Joshua Haug</name>
    <email>josh.haug55@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Hive Temperature Monitor, Version 2</title>
+   <link href="http://localhost:4000/hardware-v2.html"/>
+   <updated>2020-07-05T00:00:00-07:00</updated>
+   <id>http://localhost:4000/hardware-v2</id>
+   <content type="html">&lt;p&gt;I just got some K-type thermocouples and MAX6675 breakout boards in the mail. It’s Christmas in July!  In my previous prototype, I used one thermocouple and one IR thermopile to measure the hive and ambient temperatures, respectively. But that was an apples-to-oranges comparison. With identical thermometry hardware, I should be able to get a better sense of the type of thermoregulation the bees are performing in the hive.&lt;/p&gt;
+
+&lt;p&gt;Here’s a wiring diagram showing how the MAX6675 breakout boards are connected to the Raspberry Pi:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/3tc-wiring.png&quot; alt=&quot; &quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The goal is to do as little wiring as possible, so I’m sharing the power (&lt;code class=&quot;highlighter-rouge&quot;&gt;VCC&lt;/code&gt;) and ground (&lt;code class=&quot;highlighter-rouge&quot;&gt;GND&lt;/code&gt;) pins as well as the serial clock (&lt;code class=&quot;highlighter-rouge&quot;&gt;SCK&lt;/code&gt;) and serial output (&lt;code class=&quot;highlighter-rouge&quot;&gt;SO&lt;/code&gt;) pins across the three breakout boards.  Each breakout has only one unique wire, going to the chip select (&lt;code class=&quot;highlighter-rouge&quot;&gt;CS&lt;/code&gt;) pin.  This pin is active low according to the &lt;a href=&quot;https://datasheets.maximintegrated.com/en/ds/MAX6675.pdf&quot;&gt;datasheet&lt;/a&gt;, so you need to set each board’s GPIO pin to 0 (and the others to 1) before reading it.&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Counting Bee Movements Using a Convolutional Neural Network</title>
@@ -34,39 +50,39 @@ Counting the number of &lt;b&gt;foragers&lt;/b&gt; (bees that collect pollen, ne
 
 &lt;p&gt;With that image, I was able to implement the network in a few minutes using  Keras:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;model = models.Sequential()
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sequential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 
-model.add(layers.Conv2D(64, (3, 3), activation='relu', input_shape=(32, 32, 3)))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.BatchNormalization())
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Conv2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input_shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MaxPooling2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BatchNormalization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
 
-model.add(layers.Conv2D(128, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.BatchNormalization())
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Conv2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MaxPooling2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BatchNormalization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
 
-model.add(layers.Conv2D(256, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Conv2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MaxPooling2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
 
-model.add(layers.Flatten())
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Flatten&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
 
-model.add(layers.Dense(512))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation(&quot;relu&quot;))
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dropout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 
-model.add(layers.Dense(256))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation(&quot;relu&quot;))
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dropout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 
-model.add(layers.Dense(128))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation(&quot;relu&quot;))
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dropout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 
-model.add(layers.Dense(64))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation(&quot;relu&quot;))
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dropout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;relu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 
-model.add(layers.Dense(1))
-model.add(layers.Activation(&quot;sigmoid&quot;))
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Activation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sigmoid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Here’s what the accuracy looks like during training:&lt;/p&gt;
@@ -111,6 +127,7 @@ model.add(layers.Activation(&quot;sigmoid&quot;))
 &lt;h3 id=&quot;temperature-data-collection&quot;&gt;Temperature Data Collection&lt;/h3&gt;
 
 &lt;p&gt;I’m measuring hive temperature with two sensors:&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;thermocouple and thermocouple amplifier (MAX6675) for internal hive temp.&lt;/li&gt;
   &lt;li&gt;infrared thermopile (TMP006) for ambient temp.&lt;/li&gt;
@@ -136,7 +153,7 @@ model.add(layers.Activation(&quot;sigmoid&quot;))
         &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;10.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Initially, I wrote the script with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;open&lt;/code&gt; statement outside the loop, like so…&lt;/p&gt;
+&lt;p&gt;Initially, I wrote the script with the &lt;code class=&quot;highlighter-rouge&quot;&gt;open&lt;/code&gt; statement outside the loop, like so…&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/home/pi/bees/temp.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;a&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
@@ -167,7 +184,7 @@ model.add(layers.Activation(&quot;sigmoid&quot;))
 
 &lt;h4 id=&quot;networking&quot;&gt;Networking&lt;/h4&gt;
 
-&lt;p&gt;The Pi is connected via WLAN to an AirPort Extreme. From the house, I can connect to the network and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ssh&lt;/code&gt; into the Pi to download the data, modify scripts, etc. To keep data collection running after I close the session, I’m running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tmux&lt;/code&gt; and detaching. There are other ways to do this, like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nohup&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;screen&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;disown&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bg&lt;/code&gt;, etc., but &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tmux&lt;/code&gt; is part of my regular workflow.&lt;/p&gt;
+&lt;p&gt;The Pi is connected via WLAN to an AirPort Extreme. From the house, I can connect to the network and &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh&lt;/code&gt; into the Pi to download the data, modify scripts, etc. To keep data collection running after I close the session, I’m running &lt;code class=&quot;highlighter-rouge&quot;&gt;tmux&lt;/code&gt; and detaching. There are other ways to do this, like &lt;code class=&quot;highlighter-rouge&quot;&gt;nohup&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;screen&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;disown&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;bg&lt;/code&gt;, etc., but &lt;code class=&quot;highlighter-rouge&quot;&gt;tmux&lt;/code&gt; is part of my regular workflow.&lt;/p&gt;
 
 &lt;p&gt;From my laptop, I can run a small script to switch networks and download the data every so often:&lt;/p&gt;
 
@@ -271,41 +288,6 @@ networksetup &lt;span class=&quot;nt&quot;&gt;-setairportnetwork&lt;/span&gt; en
  
  <entry>
    <title>A Quick and Dirty Way to Count Bees</title>
-   <link href="http://localhost:4000/quick-video-analysis.md.html"/>
-   <updated>2020-05-01T00:00:00-07:00</updated>
-   <id>http://localhost:4000/quick-video-analysis.md</id>
-   <content type="html">&lt;div class=&quot;message&quot;&gt;
-Today we'll explore some basic image processing techniques to count bees. These require &lt;b&gt;no training data&lt;/b&gt;, so we'll try them first before moving on to fancier techniques.
-&lt;/div&gt;
-
-The number of bees in the entrance of the hive is a good indicator of the health of the hive.  NEED CITATION.  
-
-Say I have a video of the entrance of a beehive, like this:
-![ ](assets/phone-basic.mp4)
-
-If I wanted to count the number of bees in each frame, I *could* set up and train an object detection CNN.  But if I was lazy, I could collapse the color data and apply a Gaussian blur to each frame, like so:
-![ ](assets/phone-blur.mp4)
-
-And I could then apply pixel thresholding to get the dark spots, like so:
-![ ](assets/phone-darkspots.mp4)
-
-To interpret the list of points as separate objects, we can use a clustering algorithm.  Here's an example using [hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering).
-
-![  ](assets/phone-clusters.mp4)
-
-It **kind of** works!  From here we can count the clusters. 
-
-Some clear problems though:
-
-* I had to determine a few values experimentally, like intensity threshold and clustering distance threshold
-* This only works because the bees' heads and thoraxes are the darkest things in frame. Any dark black objects on the ground would also be counted as bees.
-
-This technique is fast but not reliably accurate -- it is quite literally &quot;quick and dirty&quot;.  But the small amount of computation required makes it suitable for a low-power application (e.g. Arduino running on a battery).  
-</content>
- </entry>
- 
- <entry>
-   <title>A Quick and Dirty Way to Count Bees</title>
    <link href="http://localhost:4000/quick-video-analysis.html"/>
    <updated>2020-05-01T00:00:00-07:00</updated>
    <id>http://localhost:4000/quick-video-analysis</id>
@@ -318,17 +300,21 @@ Today we'll explore some basic image processing techniques to count bees. These 
 &lt;p&gt;Say I have a video of the entrance of a beehive, like this:
 &lt;img src=&quot;assets/phone-basic.mp4&quot; alt=&quot; &quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;If I wanted to count the number of bees in each frame, I &lt;em&gt;could&lt;/em&gt; set up and train an object detection CNN.  But if I was lazy, I could collapse the color data and apply a Gaussian blur to each frame, like so:
+&lt;p&gt;If I wanted to count the number of bees in each frame, I &lt;em&gt;could&lt;/em&gt; set up and train an object detection CNN.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;But here’s a lazy way to do it.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;First, collapse the color data and apply a Gaussian blur to each frame, like so:
 &lt;img src=&quot;assets/phone-blur.mp4&quot; alt=&quot; &quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;And I could then apply pixel thresholding to get the dark spots, like so:
+&lt;p&gt;Then apply pixel thresholding to get the dark spots, like so:
 &lt;img src=&quot;assets/phone-darkspots.mp4&quot; alt=&quot; &quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;To interpret the list of points as separate objects, we can use a clustering algorithm.  Here’s an example using &lt;a href=&quot;https://en.wikipedia.org/wiki/Hierarchical_clustering&quot;&gt;hierarchical clustering&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;assets/phone-clusters.mp4&quot; alt=&quot;  &quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;It &lt;strong&gt;kind of&lt;/strong&gt; works!  From here we can count the clusters.&lt;/p&gt;
+&lt;p&gt;It &lt;strong&gt;kind of&lt;/strong&gt; works!  From here we can just count the clusters to get an approximation of the number of bees in frame.&lt;/p&gt;
 
 &lt;p&gt;Some clear problems though:&lt;/p&gt;
 
@@ -337,7 +323,7 @@ Today we'll explore some basic image processing techniques to count bees. These 
   &lt;li&gt;This only works because the bees’ heads and thoraxes are the darkest things in frame. Any dark black objects on the ground would also be counted as bees.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;This technique is fast but not reliably accurate – it is quite literally “quick and dirty”.  But the small amount of computation required makes it suitable for a low-power application (e.g. Arduino running on a battery).&lt;/p&gt;
+&lt;p&gt;This technique is fast but not reliably accurate.  But the small amount of computation required makes it suitable for a low-power application.&lt;/p&gt;
 </content>
  </entry>
  
@@ -435,7 +421,7 @@ How I made this website.  Guaranteed to be boring for non-developers.
 &lt;p&gt;&lt;strong&gt;How did you get math to render on your site?&lt;/strong&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;The math on this site is rendered using &lt;a href=&quot;https://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt;.  To get this working, I navigated to Jekyll’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_layouts/default.html&lt;/code&gt; and included this snippet:&lt;/p&gt;
+  &lt;p&gt;The math on this site is rendered using &lt;a href=&quot;https://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt;.  To get this working, I navigated to Jekyll’s &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts/default.html&lt;/code&gt; and included this snippet:&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;
@@ -443,7 +429,7 @@ How I made this website.  Guaranteed to be boring for non-developers.
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Now I can use the LaTeX math format in my blog posts and it comes out as a beautiful equation.  For example, the equation for the aerodynamic diameter of an aerosol particle&lt;sup id=&quot;fnref:fn-aerodyn&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:fn-aerodyn&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; is represented as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$${a} = d_{e}\left(\frac{\rho_{p}}{\rho_{0}\chi}\right)^{\frac{1}{2}}$$&lt;/code&gt; in my code, but produces…&lt;/p&gt;
+  &lt;p&gt;Now I can use the LaTeX math format in my blog posts and it comes out as a beautiful equation.  For example, the equation for the aerodynamic diameter of an aerosol particle&lt;sup id=&quot;fnref:fn-aerodyn&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:fn-aerodyn&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; is represented as &lt;code class=&quot;highlighter-rouge&quot;&gt;$${a} = d_{e}\left(\frac{\rho_{p}}{\rho_{0}\chi}\right)^{\frac{1}{2}}$$&lt;/code&gt; in my code, but produces…&lt;/p&gt;
 &lt;/blockquote&gt;
 
 \[{a} = d_{e}\left(\frac{\rho_{p}}{\rho_{0}\chi}\right)^{\frac{1}{2}}\]
@@ -451,7 +437,7 @@ How I made this website.  Guaranteed to be boring for non-developers.
 &lt;p&gt;&lt;strong&gt;Why do your code blocks look so nice?&lt;/strong&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;The built-in support for code blocks produced ugly horizontal scroll bars.  To add functionality for code wrapping, I went to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_sass/_code.scss&lt;/code&gt;, found the block that started with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pre {&lt;/code&gt; and added in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;white-space: pre-wrap;&lt;/code&gt;, which did the trick.  If you’re on mobile, however, the code blocks are gonna look ugly.&lt;/p&gt;
+  &lt;p&gt;The built-in support for code blocks produced ugly horizontal scroll bars.  To add functionality for code wrapping, I went to &lt;code class=&quot;highlighter-rouge&quot;&gt;_sass/_code.scss&lt;/code&gt;, found the block that started with &lt;code class=&quot;highlighter-rouge&quot;&gt;pre {&lt;/code&gt; and added in &lt;code class=&quot;highlighter-rouge&quot;&gt;white-space: pre-wrap;&lt;/code&gt;, which did the trick.  If you’re on mobile, however, the code blocks are gonna look ugly.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;&lt;strong&gt;How are you hosting it?&lt;/strong&gt;&lt;/p&gt;

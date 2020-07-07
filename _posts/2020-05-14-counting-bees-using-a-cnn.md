@@ -6,7 +6,7 @@ date: "2020-05-14 14:46:20 -0700"
 
 <div class="message">
 Counting the number of <b>foragers</b> (bees that collect pollen, nectar, and water) is an important measure of hive health. What if we could use a <b>convolutional neural network</b> to count bees at the entrance of the hive?
-</div>    
+</div>
 
 Luckily, we can stand on the shoulders of giants. In [this great paper](https://www.mdpi.com/2076-3417/9/18/3743) by Vladimir Kulyukin and Sarbajit Mukherjee, the authors trained a CNN classifier for this very purpose.  More importantly, *they released their labeled datasets!*
 
@@ -60,7 +60,6 @@ model.add(layers.Activation("sigmoid"))
 Here's what the accuracy looks like during training:
 
 ![](assets/training.jpg)
-
 
 ### Applying It To Our Data
 

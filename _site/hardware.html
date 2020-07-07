@@ -53,6 +53,7 @@
 <h3 id="temperature-data-collection">Temperature Data Collection</h3>
 
 <p>I’m measuring hive temperature with two sensors:</p>
+
 <ul>
   <li>thermocouple and thermocouple amplifier (MAX6675) for internal hive temp.</li>
   <li>infrared thermopile (TMP006) for ambient temp.</li>
@@ -78,7 +79,7 @@
         <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Initially, I wrote the script with the <code class="language-plaintext highlighter-rouge">open</code> statement outside the loop, like so…</p>
+<p>Initially, I wrote the script with the <code class="highlighter-rouge">open</code> statement outside the loop, like so…</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"/home/pi/bees/temp.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
@@ -109,7 +110,7 @@
 
 <h4 id="networking">Networking</h4>
 
-<p>The Pi is connected via WLAN to an AirPort Extreme. From the house, I can connect to the network and <code class="language-plaintext highlighter-rouge">ssh</code> into the Pi to download the data, modify scripts, etc. To keep data collection running after I close the session, I’m running <code class="language-plaintext highlighter-rouge">tmux</code> and detaching. There are other ways to do this, like <code class="language-plaintext highlighter-rouge">nohup</code>, <code class="language-plaintext highlighter-rouge">screen</code>, <code class="language-plaintext highlighter-rouge">disown</code>, <code class="language-plaintext highlighter-rouge">bg</code>, etc., but <code class="language-plaintext highlighter-rouge">tmux</code> is part of my regular workflow.</p>
+<p>The Pi is connected via WLAN to an AirPort Extreme. From the house, I can connect to the network and <code class="highlighter-rouge">ssh</code> into the Pi to download the data, modify scripts, etc. To keep data collection running after I close the session, I’m running <code class="highlighter-rouge">tmux</code> and detaching. There are other ways to do this, like <code class="highlighter-rouge">nohup</code>, <code class="highlighter-rouge">screen</code>, <code class="highlighter-rouge">disown</code>, <code class="highlighter-rouge">bg</code>, etc., but <code class="highlighter-rouge">tmux</code> is part of my regular workflow.</p>
 
 <p>From my laptop, I can run a small script to switch networks and download the data every so often:</p>
 
@@ -149,6 +150,13 @@ networksetup <span class="nt">-setairportnetwork</span> en0 homenet password
   <ul class="related-posts">
     
       <li>
+        <a href="/hardware-v2.html">
+          Hive Temperature Monitor, Version 2
+          <small><time datetime="2020-07-05T00:00:00-07:00">05 Jul 2020</time></small>
+        </a>
+      </li>
+    
+      <li>
         <a href="/counting-bees-using-a-cnn.html">
           Counting Bee Movements Using a Convolutional Neural Network
           <small><time datetime="2020-05-14T14:46:20-07:00">14 May 2020</time></small>
@@ -162,13 +170,6 @@ networksetup <span class="nt">-setairportnetwork</span> en0 homenet password
         </a>
       </li>
     
-      <li>
-        <a href="/quick-video-analysis.md.html">
-          A Quick and Dirty Way to Count Bees
-          <small><time datetime="2020-05-01T00:00:00-07:00">01 May 2020</time></small>
-        </a>
-      </li>
-    
   </ul>
 </aside>
 
@@ -177,7 +178,7 @@ networksetup <span class="nt">-setairportnetwork</span> en0 homenet password
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2020-07-07T00:37:16-07:00">2020</time>. All rights reserved.
+          &copy; <time datetime="2020-07-07T16:22:17-07:00">2020</time>. All rights reserved.
         </small>
       </footer>
     </div>
