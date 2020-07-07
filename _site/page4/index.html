@@ -47,7 +47,7 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/quick-video-analysis.html">
+      <a href="/quick-video-analysis.md.html">
         A Quick and Dirty Way to Count Bees
       </a>
     </h1>
@@ -58,31 +58,29 @@
 Today we'll explore some basic image processing techniques to count bees. These require <b>no training data</b>, so we'll try them first before moving on to fancier techniques.
 </div>
 
-<p>The number of bees in the entrance of the hive is a good indicator of the health of the hive.  NEED CITATION.</p>
+The number of bees in the entrance of the hive is a good indicator of the health of the hive.  NEED CITATION.  
 
-<p>Say I have a video of the entrance of a beehive, like this:
-<img src="assets/phone-basic.mp4" alt=" " /></p>
+Say I have a video of the entrance of a beehive, like this:
+![ ](assets/phone-basic.mp4)
 
-<p>If I wanted to count the number of bees in each frame, I <em>could</em> set up and train an object detection CNN.  But if I was lazy, I could collapse the color data and apply a Gaussian blur to each frame, like so:
-<img src="assets/phone-blur.mp4" alt=" " /></p>
+If I wanted to count the number of bees in each frame, I *could* set up and train an object detection CNN.  But if I was lazy, I could collapse the color data and apply a Gaussian blur to each frame, like so:
+![ ](assets/phone-blur.mp4)
 
-<p>And I could then apply pixel thresholding to get the dark spots, like so:
-<img src="assets/phone-darkspots.mp4" alt=" " /></p>
+And I could then apply pixel thresholding to get the dark spots, like so:
+![ ](assets/phone-darkspots.mp4)
 
-<p>To interpret the list of points as separate objects, we can use a clustering algorithm.  Here’s an example using <a href="https://en.wikipedia.org/wiki/Hierarchical_clustering">hierarchical clustering</a>.</p>
+To interpret the list of points as separate objects, we can use a clustering algorithm.  Here's an example using [hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering).
 
-<p><img src="assets/phone-clusters.mp4" alt="  " /></p>
+![  ](assets/phone-clusters.mp4)
 
-<p>It <strong>kind of</strong> works!  From here we can count the clusters.</p>
+It **kind of** works!  From here we can count the clusters. 
 
-<p>Some clear problems though:</p>
+Some clear problems though:
 
-<ul>
-  <li>I had to determine a few values experimentally, like intensity threshold and clustering distance threshold</li>
-  <li>This only works because the bees’ heads and thoraxes are the darkest things in frame. Any dark black objects on the ground would also be counted as bees.</li>
-</ul>
+* I had to determine a few values experimentally, like intensity threshold and clustering distance threshold
+* This only works because the bees' heads and thoraxes are the darkest things in frame. Any dark black objects on the ground would also be counted as bees.
 
-<p>This technique is fast but not reliably accurate – it is quite literally “quick and dirty”.  But the small amount of computation required makes it suitable for a low-power application (e.g. Arduino running on a battery).</p>
+This technique is fast but not reliably accurate -- it is quite literally "quick and dirty".  But the small amount of computation required makes it suitable for a low-power application (e.g. Arduino running on a battery).  
 
   </article>
   
@@ -92,7 +90,7 @@ Today we'll explore some basic image processing techniques to count bees. These 
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2020-07-04T20:43:55-07:00">2020</time>. All rights reserved.
+          &copy; <time datetime="2020-07-07T00:37:16-07:00">2020</time>. All rights reserved.
         </small>
       </footer>
     </div>

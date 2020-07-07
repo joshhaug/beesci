@@ -9,15 +9,21 @@ I wrote a [blog post](about-this-site.html) about how I made this site.  I host 
 
 ## Who Made This?
 
-Some guy named **Josh Haug** made this.  Some quick facts about him...
+I made this.  My name is **Josh Haug**, and I'm passionate about bees and computer science. My educational background:
 
-* B.S. in Mathematics / Computer Science from [Pepperdine University](http://www.pepperdine.edu/)
+* B.S. in Mathematics / Computer Science from [Pepperdine](http://www.pepperdine.edu/)
 * Pursing an M.S. in Computer Science from [USC](https://www.cs.usc.edu)
+
+My beekeeping background:
+
+* Five hives in my backyard
+
+* Stung more than 15 times
 
 ## Contact
 
 If you'd like to contact me, there are a few ways of doing it:
 
-* Send an email to [josh.haug55@gmail.com](mailto:josh.haug55@gmail.com?Subject=Hello%20World)
+* Send me an email at [josh.haug55@gmail.com](mailto:josh.haug55@gmail.com?Subject=Hello%20World)
 * Check me out on [GitHub](https://www.github.com/joshhaug)
-* Connect or link or whatever on [LinkedIn](https://www.linkedin.com/in/joshua-haug-64a04897)
+* Find me on [LinkedIn](https://www.linkedin.com/in/joshua-haug-64a04897)

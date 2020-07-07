@@ -4,7 +4,7 @@
  <title>BeeSci</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2020-07-04T20:43:55-07:00</updated>
+ <updated>2020-07-07T00:37:16-07:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Joshua Haug</name>
@@ -266,6 +266,41 @@ networksetup &lt;span class=&quot;nt&quot;&gt;-setairportnetwork&lt;/span&gt; en
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>A Quick and Dirty Way to Count Bees</title>
+   <link href="http://localhost:4000/quick-video-analysis.md.html"/>
+   <updated>2020-05-01T00:00:00-07:00</updated>
+   <id>http://localhost:4000/quick-video-analysis.md</id>
+   <content type="html">&lt;div class=&quot;message&quot;&gt;
+Today we'll explore some basic image processing techniques to count bees. These require &lt;b&gt;no training data&lt;/b&gt;, so we'll try them first before moving on to fancier techniques.
+&lt;/div&gt;
+
+The number of bees in the entrance of the hive is a good indicator of the health of the hive.  NEED CITATION.  
+
+Say I have a video of the entrance of a beehive, like this:
+![ ](assets/phone-basic.mp4)
+
+If I wanted to count the number of bees in each frame, I *could* set up and train an object detection CNN.  But if I was lazy, I could collapse the color data and apply a Gaussian blur to each frame, like so:
+![ ](assets/phone-blur.mp4)
+
+And I could then apply pixel thresholding to get the dark spots, like so:
+![ ](assets/phone-darkspots.mp4)
+
+To interpret the list of points as separate objects, we can use a clustering algorithm.  Here's an example using [hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering).
+
+![  ](assets/phone-clusters.mp4)
+
+It **kind of** works!  From here we can count the clusters. 
+
+Some clear problems though:
+
+* I had to determine a few values experimentally, like intensity threshold and clustering distance threshold
+* This only works because the bees' heads and thoraxes are the darkest things in frame. Any dark black objects on the ground would also be counted as bees.
+
+This technique is fast but not reliably accurate -- it is quite literally &quot;quick and dirty&quot;.  But the small amount of computation required makes it suitable for a low-power application (e.g. Arduino running on a battery).  
 </content>
  </entry>
  

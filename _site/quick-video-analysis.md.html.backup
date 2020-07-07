@@ -14,7 +14,7 @@
 
   <title>
     
-      BeeSci &middot; Beehive Science
+      A Quick and Dirty Way to Count Bees &middot; BeeSci
     
   </title>
   <link rel="canonical" href=" { { site.url } }{ { page.url } }" />
@@ -43,100 +43,68 @@
       </header>
 
       <main>
-        <div class="posts">
-  
-  <article class="post">
-    <h1 class="post-title">
-      <a href="/counting-bees-using-a-cnn.html">
-        Counting Bee Movements Using a Convolutional Neural Network
-      </a>
-    </h1>
-
-    <time datetime="2020-05-14T14:46:20-07:00" class="post-date">14 May 2020</time>
-
-    <div class="message">
-Counting the number of <b>foragers</b> (bees that collect pollen, nectar, and water) is an important measure of hive health. What if we could use a <b>convolutional neural network</b> to count bees at the entrance of the hive?
+        <article class="post">
+  <h1 class="post-title">A Quick and Dirty Way to Count Bees</h1>
+  <time datetime="2020-05-01T00:00:00-07:00" class="post-date">01 May 2020</time>
+  <div class="message">
+Today we'll explore some basic image processing techniques to count bees. These require <b>no training data</b>, so we'll try them first before moving on to fancier techniques.
 </div>
 
-<p>Luckily, we can stand on the shoulders of giants. In <a href="https://www.mdpi.com/2076-3417/9/18/3743">this great paper</a> by Vladimir Kulyukin and Sarbajit Mukherjee, the authors trained a CNN classifier for this very purpose.  More importantly, <em>they released their labeled datasets!</em></p>
+The number of bees in the entrance of the hive is a good indicator of the health of the hive.  NEED CITATION.  
 
-<p>Let’s take a look at some of their data (from dataset BEE1, 32x32 images):</p>
+Say I have a video of the entrance of a beehive, like this:
+![ ](assets/phone-basic.mp4)
 
-<p><img src="assets/classes.jpg" alt="" /></p>
+If I wanted to count the number of bees in each frame, I *could* set up and train an object detection CNN.  But if I was lazy, I could collapse the color data and apply a Gaussian blur to each frame, like so:
+![ ](assets/phone-blur.mp4)
 
-<p>The “no bee” class seems to have a red bias, but we’ll address that later.</p>
+And I could then apply pixel thresholding to get the dark spots, like so:
+![ ](assets/phone-darkspots.mp4)
 
-<p>Here’s the architecture that they say worked best for a 32x32 input image:
-<img src="assets/cnn-1.jpg" alt="" /></p>
+To interpret the list of points as separate objects, we can use a clustering algorithm.  Here's an example using [hierarchical clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering).
 
-<p>With that image, I was able to implement the network in a few minutes using  Keras:</p>
+![  ](assets/phone-clusters.mp4)
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>model = models.Sequential()
+It **kind of** works!  From here we can count the clusters. 
 
-model.add(layers.Conv2D(64, (3, 3), activation='relu', input_shape=(32, 32, 3)))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.BatchNormalization())
+Some clear problems though:
 
-model.add(layers.Conv2D(128, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.BatchNormalization())
+* I had to determine a few values experimentally, like intensity threshold and clustering distance threshold
+* This only works because the bees' heads and thoraxes are the darkest things in frame. Any dark black objects on the ground would also be counted as bees.
 
-model.add(layers.Conv2D(256, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
+This technique is fast but not reliably accurate -- it is quite literally "quick and dirty".  But the small amount of computation required makes it suitable for a low-power application (e.g. Arduino running on a battery).  
 
-model.add(layers.Flatten())
+</article>
 
-model.add(layers.Dense(512))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation("relu"))
 
-model.add(layers.Dense(256))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation("relu"))
+<aside class="related">
+  <h3>Related posts</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/counting-bees-using-a-cnn.html">
+          Counting Bee Movements Using a Convolutional Neural Network
+          <small><time datetime="2020-05-14T14:46:20-07:00">14 May 2020</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/hardware.html">
+          Prototype For Hive Monitoring
+          <small><time datetime="2020-05-14T00:00:00-07:00">14 May 2020</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/hive-temp.html">
+          Hive Temperature Analysis
+          <small><time datetime="2020-05-02T00:00:00-07:00">02 May 2020</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
 
-model.add(layers.Dense(128))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation("relu"))
-
-model.add(layers.Dense(64))
-model.add(layers.Dropout(0.5))
-model.add(layers.Activation("relu"))
-
-model.add(layers.Dense(1))
-model.add(layers.Activation("sigmoid"))
-</code></pre></div></div>
-
-<p>Here’s what the accuracy looks like during training:</p>
-
-<p><img src="assets/training.jpg" alt="" /></p>
-
-<h3 id="applying-it-to-our-data">Applying It To Our Data</h3>
-
-<p>Note that this is an image <strong>classifier</strong>, not a detector.  To apply this classifier to video, the authors used a scheme like this:</p>
-
-<ol>
-  <li>apply some background subtraction/motion detection algorithm like <a href="http://www.ee.surrey.ac.uk/CVSSP/Publications/papers/KaewTraKulPong-AVBS01.pdf">MOG</a>, <a href="https://ieeexplore.ieee.org/document/1333992">MOG2</a>, or <a href="https://goldberg.berkeley.edu/pubs/acc-2012-visual-tracking-final.pdf">GMG</a> to determine regions of interest, then</li>
-  <li>generate some 32x32 image tile containing the region of interest, then</li>
-  <li>run the CNN on the tile to determine whether the motion was “bee related” or not</li>
-</ol>
-
-<p>In other words, <strong>rather than counting the number of bees, they are counting the number of movements that are bee-related</strong>.  This is a useful metric to determine <em>relative</em> changes in foraging behavior.  That said, a bee detection or pose estimation NN may provide even more insight.</p>
-
-<p>Regardless, this should be pretty easy to implement.  Let’s revisit the video of a hive entrance I analyzed in an <a href="quick-video-analysis.html">earlier post</a>:</p>
-
-<p><img src="assets/phone-basic.mp4" alt=" " /></p>
-
-<p>Here’s the video with the <a href="https://docs.opencv.org/master/d1/dc5/tutorial_background_subtraction.html">MOG2</a> background subtraction algorithm applied:</p>
-
-<p><img src="assets/phone-mogmask.mp4" alt="  " /></p>
-
-<p>We can then threshold the background subtraction output to get regions with substantial movement only:</p>
-
-<p><img src="assets/phone-mogthresh.mp4" alt="  " /></p>
-
-  </article>
-  
-</div>
 
       </main>
 
