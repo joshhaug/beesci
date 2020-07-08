@@ -54,24 +54,22 @@
 
     <time datetime="2020-05-14T00:00:00-07:00" class="post-date">14 May 2020</time>
 
-    <p>I’m using a super simple setup for hive monitoring.  The brains of the operation is a Raspberry Pi 4 running Raspbian.</p>
+    <p>I’m using a super simple setup for hive monitoring.  The brains of the operation is a Raspberry Pi 4 running Raspbian.   Here’s what it looks like on the inside:</p>
 
-<p><img src="assets/raspberry-pi.jpg" alt=" " /></p>
+<p><img src="../assets/setup.jpg" alt=" " /></p>
 
 <h3 id="temperature-data-collection">Temperature Data Collection</h3>
 
 <p>I’m measuring hive temperature with two sensors:</p>
 
 <ul>
-  <li>thermocouple and thermocouple amplifier (MAX6675) for internal hive temp.</li>
-  <li>infrared thermopile (TMP006) for ambient temp.</li>
+  <li>k-type thermocouple and amplifier (MAX6675) for internal temperature</li>
+  <li>infrared thermopile (TMP006) for ambient temperature</li>
 </ul>
 
-<p><img src="assets/tmp006.jpg" alt=" " /></p>
+<p>Ideally I’d use just thermocouples, but these are the only sensors I have on hand.</p>
 
-<p>Ideally I’d use two thermocouples, but these are the only sensors I have on hand.</p>
-
-<p>I’m using a <a href="https://github.com/tdack/MAX6675">python library</a> to read the temperature every ten seconds.  Nothing fancy – just appending a text file with timestamped readings.  Here’s the basic idea:</p>
+<p>I’m using a <a href="https://github.com/tdack/MAX6675">python library</a> to read the temperature every ten seconds.  The logging scheme is decidedly un-fancy – I’m just appending a text file with timestamped readings.  Here’s the basic idea:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"/home/pi/bees/temp.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -91,14 +89,17 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"/home/pi/bees/temp.txt"</span><span class="p">,</span> <span class="s">"a"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="c1"># ...
-</span></code></pre></div></div>
+        <span class="c1"># ... get temperatures
+</span>        <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">'something'</span><span class="p">)</span>
+</code></pre></div></div>
 
-<p>… to save on the cost of reopening the file for each iteration of the loop.  However, this causes those writes to be bundled into larger writes which is inconvenient when you want the most recent data.</p>
+<p>… to save on the cost of reopening the file for each iteration of the loop.  Because why not?  The behavior is the same, right?</p>
 
-<p>These sensors are arranged in a crappy box made from plywood and pallet wood. It’s ugly as sin.</p>
+<p style="color:red"><b>Wrong.</b> This code causes the writes to be bundled into larger writes -- the file will update occassionally (in my experience, every couple hundred writes or so) and again when you terminate the python script.</p>
 
-<h2 id="audio-data-collection-setup">Audio Data Collection Setup</h2>
+<p><strong>Why does this happen, you ask?</strong> I don’t know. Maybe the writes are being bundled by the python interpreter, maybe it’s the OS’s disk scheduler, maybe it’s just plain ol’ witchcraft.  Some day I’d like to get to the bottom of this, but today is not that day.</p>
+
+<h2 id="audio-data-collection">Audio Data Collection</h2>
 
 <p>Audio is coming from an old Guitar Hero USB mic I cannibalized.</p>
 
@@ -116,9 +117,9 @@
 
 <p>Besides, the standard 44.1kHz stereo signal is ~10MB per minute. The mono 11kHz signal is ~1.25 MB per minute, which is a tolerable 1.8GB per day. For data safety and ease of processing, I’m recording the audio data as 1-hour wav files.</p>
 
-<h4 id="networking">Networking</h4>
+<h2 id="networking">Networking</h2>
 
-<p>The Pi is connected via WLAN to an AirPort Extreme. From the house, I can connect to the network and <code class="highlighter-rouge">ssh</code> into the Pi to download the data, modify scripts, etc. To keep data collection running after I close the session, I’m running <code class="highlighter-rouge">tmux</code> and detaching. There are other ways to do this, like <code class="highlighter-rouge">nohup</code>, <code class="highlighter-rouge">screen</code>, <code class="highlighter-rouge">disown</code>, <code class="highlighter-rouge">bg</code>, etc., but <code class="highlighter-rouge">tmux</code> is part of my regular workflow.</p>
+<p>The Pi is connected via WLAN to an old AirPort Extreme. From the house, I can connect to the network and <code class="highlighter-rouge">ssh</code> into the Pi to download the data, modify scripts, etc. To keep data collection running after I close the session, I’m running <code class="highlighter-rouge">tmux</code> and detaching. There are other ways to do this, like <code class="highlighter-rouge">nohup</code>, <code class="highlighter-rouge">screen</code>, <code class="highlighter-rouge">disown</code>, <code class="highlighter-rouge">bg</code>, etc., but <code class="highlighter-rouge">tmux</code> is part of my regular workflow.</p>
 
 <p>From my laptop, I can run a small script to switch networks and download the data every so often:</p>
 
@@ -133,11 +134,11 @@ networksetup <span class="nt">-setairportnetwork</span> en0 homenet password
 
 <p>This data collection scheme is fine for prototyping, but would be very inconvenient for live metrics.</p>
 
-<p>I’m making this thing seem a lot sexier than it really is. Let’s see how it actually looks on the inside (without the power supply):</p>
+<h2 id="housing">Housing</h2>
 
-<p><img src="assets/setup.jpg" alt="   " /></p>
+<p>These sensors are arranged in a crappy box made from literal garbage – plywood and pallet wood I found in a dumpster.  Here’s  what it looks like all assembled:</p>
 
-<p>Honestly, the whole prototype is kind of ugly.</p>
+<p><img src="../assets/hive-with-sensors.jpg" alt=" " /></p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
@@ -158,7 +159,7 @@ networksetup <span class="nt">-setairportnetwork</span> en0 homenet password
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2020-07-07T16:22:17-07:00">2020</time>. All rights reserved.
+          &copy; <time datetime="2020-07-08T00:22:52-07:00">2020</time>. All rights reserved.
         </small>
       </footer>
     </div>

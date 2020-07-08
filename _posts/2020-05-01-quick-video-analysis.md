@@ -12,7 +12,7 @@ tags:
 ---
 
 <div class="message">
-Today we'll explore some basic image processing techniques to count bees. These require <b>no training data</b>, so we'll try them first before moving on to fancier techniques.
+Today we'll explore some basic image processing techniques to count bees. These require <b>no labeled training data</b>, so we'll try them first before moving on to fancier techniques.
 </div>
 
 The number of bees in the entrance of the hive is a good indicator of the health of the hive.  NEED CITATION.  

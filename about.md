@@ -5,19 +5,22 @@ title: About
 
 ## Website Info
 
-I wrote a [blog post](about-this-site.html) about how I made this site.  I host this site on [GitHub](https://github.com/joshhaug/joshhaug.github.io).
+I wrote a [blog post](about-this-site.html) about how I made this site.  I host this site on GitHub.
 
 ## Who Made This?
 
-I made this.  My name is **Josh Haug**, and I'm passionate about bees and computer science. My educational background:
+I made this.
+
+![ ](assets/i-made-this.jpg)
+
+My name is **Josh Haug**, and I'm passionate about bees and computer science. My educational background:
 
 * B.S. in Mathematics / Computer Science from [Pepperdine](http://www.pepperdine.edu/)
 * Pursing an M.S. in Computer Science from [USC](https://www.cs.usc.edu)
 
-My beekeeping background:
+My beekeeping background:  
 
 * Five hives in my backyard
-
 * Stung more than 15 times
 
 ## Contact
