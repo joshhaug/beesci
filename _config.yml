@@ -8,8 +8,8 @@ paginate:            1
 #baseurl:             ""
 analytics_id:        UA-83227079-1
 
-url: https://jhaug.com   # with the https protocol
-enforce_ssl: jhaug.com   # without any protocol
+url: https://beesci.org   # with the https protocol
+enforce_ssl: beesci.org   # without any protocol
 
 pages_list:
   About: '/about'
@@ -25,7 +25,7 @@ sass:
 # About/contact
 author:
   name:              Joshua Haug
-  url:               http://www.jhaug.com
+  url:               http://www.beesci.org
   email:             josh.haug55@gmail.com
 
 # Custom vars
