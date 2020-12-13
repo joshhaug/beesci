@@ -47,22 +47,105 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/hardware-v2.html">
-        Hive Temperature Monitor, Version 2
+      <a href="/charts.html">
+        Charts
       </a>
     </h1>
 
-    <time datetime="2020-07-05T00:00:00-07:00" class="post-date">05 Jul 2020</time>
+    <time datetime="2020-12-13T00:00:00-08:00" class="post-date">13 Dec 2020</time>
 
-    <p>In my <a href="hardware.html">previous prototype</a>, I used one thermocouple and one IR thermopile to measure the hive and ambient temperatures, respectively. But that was an apples-to-oranges comparison. With identical thermometry hardware, I should be able to get a better sense of the tempertaures inside and outside the hive.</p>
+    <script type="text/javascript" src="js/d3.v4.js"></script>
 
-<p>Well, I just got some K-type thermocouples and MAX6675 breakout boards in the mail. It’s like Christmas in July!</p>
+<script type="text/javascript" src="js/line-graph.js"></script>
 
-<p>Here’s a wiring diagram showing how the new MAX6675 breakouts are connected to the Raspberry Pi:</p>
+<!-- <script type="text/javascript" src="js/line-test.js"></script> -->
 
-<p><img src="../assets/3tc-wiring.png" alt=" " /></p>
+<h2 id="hive-statistics">Hive Statistics</h2>
+<p><span>
+    <b>Hive Weight</b>   
+    <select id="weight_select"></select>
+</span></p>
+<div class="card-body pt-0" id="weight_container" height="300">
+    <div id="weight_graph"></div>
+</div>
 
-<p>Note that I’m sharing the power (<code class="highlighter-rouge">VCC</code>), ground (<code class="highlighter-rouge">GND</code>), serial clock input (<code class="highlighter-rouge">SCK</code>) and serial data output (<code class="highlighter-rouge">SO</code>) lines across the three boards.  Each board has only one unique wire, going to the chip select (<code class="highlighter-rouge">CS</code>) pin.  This pin is active low according to the <a href="https://datasheets.maximintegrated.com/en/ds/MAX6675.pdf">datasheet</a>, so you need to set each board’s GPIO pin to 0 (and the others to 1) before reading it.</p>
+<p><span>
+    <b>Hive Temperature</b>   
+    <select id="temp_select"></select>
+</span></p>
+<div class="card-body pt-0" id="temp_container" height="300">
+    <div id="temp_graph"></div>
+</div>
+
+<p><br /></p>
+
+<h2 id="device-statistics">Device Statistics</h2>
+<p><span>
+    <b>Power Consumption</b>   
+    <select id="power_select"></select>
+</span></p>
+<div class="card-body pt-0" id="power_container" height="350">
+    <div id="power_graph"></div>
+</div>
+
+<p><span>
+    <b>Battery Voltage</b>   
+    <select id="voltage_select"></select>
+</span></p>
+<div class="card-body pt-0" id="voltage_container" height="350">
+    <div id="voltage_graph"></div>
+</div>
+
+<script>
+//Read the data
+d3.csv("data/power.csv", d => {
+    return {
+    // timestamp,voltage,current,power,shuntvolt,name
+    date: d3.timeParse("%Y-%m-%d %H:%M:%S")(d.timestamp),
+    voltage: +d.voltage,
+    power: +d.power,
+    name: d.name
+    }
+  }, function (data) {
+      console.log(data[0]);
+      console.log(data[0]["power"]);
+      console.log(d3.extent(data, function (d) { return d["power"]; }));
+      var xn = "power";
+      console.log(d3.extent(data, function (d) { return d[xn]; }));
+
+      linegraph(data, "date", "power", "#power_container", "#power_graph", "#power_select");
+      linegraph(data, "date", "voltage", "#voltage_container", "#voltage_graph", "#voltage_select");
+  });
+
+
+
+//Read the data
+d3.csv("data/weight.csv", d => {
+    return {
+      date: d3.timeParse("%Y-%m-%d %H:%M:%S")(d.timestamp),
+      weight: +d.weight,
+      name: d.name
+    }
+  }, function (data) {
+    linegraph(data, "date", "weight", "#weight_container", "#weight_graph", "#weight_select");
+  });
+
+
+
+//Read the data
+d3.csv("data/temp.csv", d => {
+    return {
+      date: d3.timeParse("%Y-%m-%d %H:%M:%S")(d.timestamp),
+      temp: +d.temp,
+      humid: +d.humid,
+      name: d.name
+    }
+  }, function (data) {
+    linegraph(data, "date", "temp", "#temp_container", "#temp_graph", "#temp_select");
+
+  });
+</script>
+
 
   </article>
   
@@ -72,7 +155,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2020-07-08T12:22:08-07:00">2020</time>. All rights reserved.
+          &copy; <time datetime="2020-12-13T02:38:48-08:00">2020</time>. All rights reserved.
         </small>
       </footer>
     </div>

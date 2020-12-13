@@ -14,7 +14,7 @@
 
   <title>
     
-      BeeSci &middot; Beehive Science
+      Charts &middot; BeeSci
     
   </title>
   <link rel="canonical" href=" { { site.url } }{ { page.url } }" />
@@ -43,55 +43,101 @@
       </header>
 
       <main>
-        <div class="posts">
-  
-  <article class="post">
-    <h1 class="post-title">
-      <a href="/quick-video-analysis.html">
-        A Quick and Dirty Way to Count Bees
-      </a>
-    </h1>
+        <article class="post">
+  <script type="text/javascript" src="js/d3.v4.js"></script>
 
-    <time datetime="2020-05-01T00:00:00-07:00" class="post-date">01 May 2020</time>
+<script type="text/javascript" src="js/line-graph.js"></script>
 
-    <div class="message">
-Today we'll explore some basic image processing techniques to count bees. These require <b>no labeled training data</b>, so we'll try them first before moving on to fancier techniques.
+<!-- <script type="text/javascript" src="js/line-test.js"></script> -->
+
+<h2 id="hive-statistics">Hive Statistics</h2>
+<p><span>
+    <b>Hive Weight</b>   
+    <select id="weight_select"></select>
+</span></p>
+<div class="card-body pt-0" id="weight_container" height="300">
+    <div id="weight_graph"></div>
 </div>
 
-<p>The number of bees in the entrance of the hive is a good indicator of the health of the hive.  NEED CITATION.</p>
-
-<p>Say I have a video of the entrance of a beehive, like this:
-<img src="assets/phone-basic.mp4" alt=" " /></p>
-
-<p>If I wanted to count the number of bees in each frame, I <em>could</em> set up and train an object detection CNN.</p>
-
-<p><strong>But here’s a lazy way to do it.</strong></p>
-
-<p>First, collapse the color data and apply a Gaussian blur to each frame, like so:
-<img src="assets/phone-blur.mp4" alt=" " /></p>
-
-<p>Then apply pixel thresholding to get the dark spots, like so:
-<img src="assets/phone-darkspots.mp4" alt=" " /></p>
-
-<p>To interpret the list of points as separate objects, we can use a clustering algorithm.  Here’s an example using <a href="https://en.wikipedia.org/wiki/Hierarchical_clustering">hierarchical clustering</a>.</p>
-
-<p><img src="assets/phone-clusters.mp4" alt="  " /></p>
-
-<p>It <strong>kind of</strong> works!  From here we can just count the clusters to get an approximation of the number of bees in frame.</p>
-
-<p>Some clear problems though:</p>
-
-<ul>
-  <li>I had to determine a few values experimentally, like intensity threshold and clustering distance threshold</li>
-  <li>This only works because the bees’ heads and thoraxes are the darkest things in frame. Any dark black objects on the ground would also be counted as bees.</li>
-</ul>
-
-<p>This technique is fast but not reliably accurate.  But the small amount of computation required makes it suitable for a low-power application.</p>
-
-  </article>
-  
+<p><span>
+    <b>Hive Temperature</b>   
+    <select id="temp_select"></select>
+</span></p>
+<div class="card-body pt-0" id="temp_container" height="300">
+    <div id="temp_graph"></div>
 </div>
 
+<p><br /></p>
+
+<h2 id="device-statistics">Device Statistics</h2>
+<p><span>
+    <b>Power Consumption</b>   
+    <select id="power_select"></select>
+</span></p>
+<div class="card-body pt-0" id="power_container" height="350">
+    <div id="power_graph"></div>
+</div>
+
+<p><span>
+    <b>Battery Voltage</b>   
+    <select id="voltage_select"></select>
+</span></p>
+<div class="card-body pt-0" id="voltage_container" height="350">
+    <div id="voltage_graph"></div>
+</div>
+
+<script>
+//Read the data
+d3.csv("data/power.csv", d => {
+    return {
+    // timestamp,voltage,current,power,shuntvolt,name
+    date: d3.timeParse("%Y-%m-%d %H:%M:%S")(d.timestamp),
+    voltage: +d.voltage,
+    power: +d.power,
+    name: d.name
+    }
+  }, function (data) {
+      console.log(data[0]);
+      console.log(data[0]["power"]);
+      console.log(d3.extent(data, function (d) { return d["power"]; }));
+      var xn = "power";
+      console.log(d3.extent(data, function (d) { return d[xn]; }));
+
+      linegraph(data, "date", "power", "#power_container", "#power_graph", "#power_select");
+      linegraph(data, "date", "voltage", "#voltage_container", "#voltage_graph", "#voltage_select");
+  });
+
+
+
+//Read the data
+d3.csv("data/weight.csv", d => {
+    return {
+      date: d3.timeParse("%Y-%m-%d %H:%M:%S")(d.timestamp),
+      weight: +d.weight,
+      name: d.name
+    }
+  }, function (data) {
+    linegraph(data, "date", "weight", "#weight_container", "#weight_graph", "#weight_select");
+  });
+
+
+
+//Read the data
+d3.csv("data/temp.csv", d => {
+    return {
+      date: d3.timeParse("%Y-%m-%d %H:%M:%S")(d.timestamp),
+      temp: +d.temp,
+      humid: +d.humid,
+      name: d.name
+    }
+  }, function (data) {
+    linegraph(data, "date", "temp", "#temp_container", "#temp_graph", "#temp_select");
+
+  });
+</script>
+
+
+</article>
       </main>
 
       <footer class="footer">
